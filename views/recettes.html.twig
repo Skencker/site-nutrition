@@ -1,0 +1,69 @@
+{% extends "base.html.twig" %}
+
+{% block titre %}
+	<h1 class="text-center">Liste des recettes</h1>
+{% endblock %}}
+
+{% if message|length >0 %}
+	<div class="alert alert-{{message.type}}" role="alert">
+		{{message.contenu}}
+	</div>
+{% endif %}
+
+
+{% block contenu %}
+
+	<div class="container">
+		<button class="btn btn-success w-100" onclick="afficherFormulaire()">Ajouter</button>
+		{# Formulaire d'ajout d'une recette #}
+		<form id="ajoutForm" class="d-none" method="POST" action="" enctype="multipart/form-data">
+			<fieldset>
+				<legend>Création d'une recette</legend>
+				<div class="form-group">
+					<label for="nom">Titre</label>
+					<input type="text" class="form-control" id="nom" name="nom">
+				</div>
+				<div class="form-group">
+					<label for="ingredients">Ingrédients</label>
+					<input type="text" class="form-control" id="ingredients" name="ingredients">
+				</div>
+				<div class="form-group">
+					<label for="recette">Recette</label>
+					<input type="text" class="form-control" id="recette" name="recette">
+				</div>
+				<div class="form-group">
+					<label for="image">Image</label>
+					<input type="file" class="form-control-file" id="image" name="image">
+				</div>
+				<button class="btn btn-primary" type="submit">Valider</button>
+			</fieldset>
+		</form>
+		<div
+			class="row row-cols-1 row-cols-md-3 pt-2">
+
+			{# liste des recettes #}
+			{% for recette in recettes %}
+				<div class="col-sm-2 p-2">
+					<div class="card bg-dark">
+						<img src="/images/{{recette.image}}" width="100px" class="card-img-top" alt="recette">
+						<div class="card-body text-white">
+							<h5 class="card-title">
+								<a href="/recettes/{{recette._id}}">{{recette.nom}}</a>
+							</h5>
+							<a href="/recettes/modification/{{recette._id}}" class="btn btn-warning m-2">
+								Modifier
+							</a>
+							<form method="POST" action="/recettes/delete/{{recette._id}}" onsubmit="return confirm('Voulez-vous vraiment supprimer la recette?');">
+								<button class="btn btn-danger m-2" type="submit">Supprimer
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+
+	<script src="/js/ajoutRecette.js"></script>
+{% endblock %}}
