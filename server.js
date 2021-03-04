@@ -1,7 +1,8 @@
 const express = require("express");
 const server = express();
 const morgan = require("morgan");
-const router = require("./router");
+const routerGlobal = require("./routers/global.router");
+const routerLivres = require("./routers/livres.router");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const session = require("express-session");
@@ -27,7 +28,9 @@ server.use(bodyParser.urlencoded({extended:false}));
 server.use(express.static("public"));
 
 server.use(morgan("dev"));
-server.use("/", router);
+
+server.use("/", routerLivres);
+server.use("/", routerGlobal);
 
 //port
 server.listen(3000);
